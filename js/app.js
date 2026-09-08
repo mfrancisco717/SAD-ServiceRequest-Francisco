@@ -5,6 +5,7 @@
 let currentUser = null;
 let allRequests = [];
 
+
 // =====================================
 // CHECK USER SESSION
 // =====================================
@@ -17,13 +18,21 @@ async function checkUser() {
     } = await supabaseClient.auth.getUser();
 
     if (error) {
-        console.error("Session error:", error);
+
+        console.error(
+            "Session error:",
+            error
+        );
+
         window.location.href = "login.html";
+
         return false;
     }
 
     if (!user) {
+
         window.location.href = "login.html";
+
         return false;
     }
 
@@ -36,6 +45,7 @@ async function checkUser() {
 
     return true;
 }
+
 
 // =====================================
 // LOAD DASHBOARD
@@ -51,10 +61,12 @@ async function loadDashboard() {
         .select("status");
 
     if (error) {
+
         console.error(
             "Error loading dashboard:",
             error
         );
+
         return;
     }
 
@@ -74,6 +86,7 @@ async function loadDashboard() {
         request =>
             request.status === "Completed"
     ).length;
+
 
     const totalElement =
         document.getElementById(
@@ -95,25 +108,40 @@ async function loadDashboard() {
             "completedRequests"
         );
 
+
     if (totalElement) {
-        totalElement.textContent = total;
+
+        totalElement.textContent =
+            total;
+
     }
+
 
     if (pendingElement) {
-        pendingElement.textContent = pending;
+
+        pendingElement.textContent =
+            pending;
+
     }
+
 
     if (inProgressElement) {
+
         inProgressElement.textContent =
             inProgress;
+
     }
 
+
     if (completedElement) {
+
         completedElement.textContent =
             completed;
+
     }
 
 }
+
 
 // =====================================
 // LOAD SERVICE REQUESTS
@@ -131,18 +159,26 @@ async function loadRequests() {
             ascending: false
         });
 
+
     if (error) {
+
         console.error(
             "Error loading requests:",
             error
         );
+
         return;
     }
 
+
     allRequests = data;
 
-    displayRequests(allRequests);
+    displayRequests(
+        allRequests
+    );
+
 }
+
 
 // =====================================
 // DISPLAY REQUESTS
@@ -155,50 +191,78 @@ function displayRequests(requests) {
             "requestTableBody"
         );
 
+
     if (!tableBody) {
+
         return;
+
     }
 
+
     tableBody.innerHTML = "";
+
 
     if (requests.length === 0) {
 
         tableBody.innerHTML = `
+
             <tr>
+
                 <td colspan="8">
+
                     No service requests found.
+
                 </td>
+
             </tr>
+
         `;
 
         return;
     }
+
 
     requests.forEach(request => {
 
         const row =
             document.createElement("tr");
 
+
         const date =
             new Date(
                 request.created_at
             ).toLocaleString();
 
+
         row.innerHTML = `
 
-            <td>${request.id}</td>
+            <td>
+                ${request.id}
+            </td>
 
-            <td>${request.requester_name}</td>
+            <td>
+                ${request.requester_name}
+            </td>
 
-            <td>${request.department}</td>
+            <td>
+                ${request.department}
+            </td>
 
-            <td>${request.category}</td>
+            <td>
+                ${request.category}
+            </td>
 
-            <td>${request.priority}</td>
+            <td>
+                ${request.priority}
+            </td>
 
-            <td>${request.status}</td>
+            <td>
+                ${request.status}
+            </td>
 
-            <td>${date}</td>
+            <td>
+                ${date}
+            </td>
 
             <td>
 
@@ -220,11 +284,13 @@ function displayRequests(requests) {
 
         `;
 
+
         tableBody.appendChild(row);
 
     });
 
 }
+
 
 // =====================================
 // SEARCH AND FILTER
@@ -247,50 +313,89 @@ function filterRequests() {
             "priorityFilter"
         );
 
+
+    if (
+        !searchInput ||
+        !statusFilter ||
+        !priorityFilter
+    ) {
+
+        return;
+
+    }
+
+
     const searchText =
         searchInput.value
             .toLowerCase()
             .trim();
 
+
     const selectedStatus =
         statusFilter.value;
+
 
     const selectedPriority =
         priorityFilter.value;
 
+
     const filteredRequests =
-        allRequests.filter(request => {
+        allRequests.filter(
+            request => {
 
-            const requesterName =
-                request.requester_name
+                const requesterName =
+                    (
+                        request.requester_name ||
+                        ""
+                    )
                     .toLowerCase();
 
-            const description =
-                request.description
+
+                const description =
+                    (
+                        request.description ||
+                        ""
+                    )
                     .toLowerCase();
 
-            const matchesSearch =
-                requesterName.includes(searchText) ||
-                description.includes(searchText);
 
-            const matchesStatus =
-                selectedStatus === "All" ||
-                request.status === selectedStatus;
+                const matchesSearch =
+                    requesterName.includes(
+                        searchText
+                    ) ||
+                    description.includes(
+                        searchText
+                    );
 
-            const matchesPriority =
-                selectedPriority === "All" ||
-                request.priority === selectedPriority;
 
-            return (
-                matchesSearch &&
-                matchesStatus &&
-                matchesPriority
-            );
+                const matchesStatus =
+                    selectedStatus === "All" ||
+                    request.status ===
+                        selectedStatus;
 
-        });
 
-    displayRequests(filteredRequests);
+                const matchesPriority =
+                    selectedPriority === "All" ||
+                    request.priority ===
+                        selectedPriority;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus &&
+                    matchesPriority
+                );
+
+            }
+        );
+
+
+    displayRequests(
+        filteredRequests
+    );
+
 }
+
 
 // =====================================
 // SEARCH EVENT
@@ -301,6 +406,7 @@ const searchInput =
         "searchInput"
     );
 
+
 if (searchInput) {
 
     searchInput.addEventListener(
@@ -309,6 +415,7 @@ if (searchInput) {
     );
 
 }
+
 
 // =====================================
 // STATUS FILTER EVENT
@@ -319,6 +426,7 @@ const statusFilter =
         "statusFilter"
     );
 
+
 if (statusFilter) {
 
     statusFilter.addEventListener(
@@ -327,6 +435,7 @@ if (statusFilter) {
     );
 
 }
+
 
 // =====================================
 // PRIORITY FILTER EVENT
@@ -337,6 +446,7 @@ const priorityFilter =
         "priorityFilter"
     );
 
+
 if (priorityFilter) {
 
     priorityFilter.addEventListener(
@@ -345,6 +455,7 @@ if (priorityFilter) {
     );
 
 }
+
 
 // =====================================
 // CREATE SERVICE REQUEST
@@ -355,6 +466,7 @@ const requestForm =
         "requestForm"
     );
 
+
 if (requestForm) {
 
     requestForm.addEventListener(
@@ -363,17 +475,22 @@ if (requestForm) {
 
             event.preventDefault();
 
+
             if (!currentUser) {
 
                 alert(
                     "Your session has expired. Please log in again."
                 );
 
+
                 window.location.href =
                     "login.html";
 
+
                 return;
+
             }
+
 
             const requesterName =
                 document
@@ -383,6 +500,7 @@ if (requestForm) {
                     .value
                     .trim();
 
+
             const department =
                 document
                     .getElementById(
@@ -391,12 +509,14 @@ if (requestForm) {
                     .value
                     .trim();
 
+
             const category =
                 document
                     .getElementById(
                         "category"
                     )
                     .value;
+
 
             const description =
                 document
@@ -406,12 +526,18 @@ if (requestForm) {
                     .value
                     .trim();
 
+
             const priority =
                 document
                     .getElementById(
                         "priority"
                     )
                     .value;
+
+
+            // =====================================
+            // VALIDATION
+            // =====================================
 
             if (!requesterName) {
 
@@ -420,7 +546,9 @@ if (requestForm) {
                 );
 
                 return;
+
             }
+
 
             if (!department) {
 
@@ -429,7 +557,9 @@ if (requestForm) {
                 );
 
                 return;
+
             }
+
 
             if (!category) {
 
@@ -438,14 +568,20 @@ if (requestForm) {
                 );
 
                 return;
+
             }
 
+
             if (description.length < 10) {
-    alert(
-        "Description must contain at least 10 characters."
-    );
-    return;
-}
+
+                alert(
+                    "Description must contain at least 10 characters."
+                );
+
+                return;
+
+            }
+
 
             if (!priority) {
 
@@ -454,14 +590,22 @@ if (requestForm) {
                 );
 
                 return;
+
             }
+
+
+            // =====================================
+            // INSERT REQUEST
+            // =====================================
 
             const {
                 error
             } = await supabaseClient
                 .from("service_requests")
                 .insert([
+
                     {
+
                         requester_name:
                             requesterName,
 
@@ -482,8 +626,11 @@ if (requestForm) {
 
                         user_id:
                             currentUser.id
+
                     }
+
                 ]);
+
 
             if (error) {
 
@@ -492,19 +639,25 @@ if (requestForm) {
                     error
                 );
 
+
                 alert(
                     "Failed to submit request: " +
                     error.message
                 );
 
+
                 return;
+
             }
+
 
             alert(
                 "Service request submitted successfully!"
             );
 
+
             requestForm.reset();
+
 
             await loadRequests();
 
@@ -515,6 +668,7 @@ if (requestForm) {
 
 }
 
+
 // =====================================
 // START APPLICATION
 // =====================================
@@ -524,9 +678,13 @@ async function startApplication() {
     const loggedIn =
         await checkUser();
 
+
     if (!loggedIn) {
+
         return;
+
     }
+
 
     await loadRequests();
 
@@ -534,20 +692,54 @@ async function startApplication() {
 
 }
 
+
 // =====================================
-// RUN APPLICATION ON DASHBOARD
+// RUN APPLICATION
+// =====================================
+
+const currentPath =
+    window.location.pathname;
+
+
+// =====================================
+// GITHUB PAGES ROOT
+// =====================================
+//
+// Example:
+//
+// https://username.github.io/SAD-ServiceRequest-Francisco/
+//
+// The root URL should open LOGIN first.
+// After successful login, auth.js sends
+// the user to index.html.
+//
 // =====================================
 
 if (
-    window.location.pathname.endsWith(
+    currentPath.endsWith("/") &&
+    !currentPath.endsWith("login.html")
+) {
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+// =====================================
+// DASHBOARD PAGE
+// =====================================
+
+else if (
+    currentPath.endsWith(
         "index.html"
-    ) ||
-    window.location.pathname === "/"
+    )
 ) {
 
     startApplication();
 
 }
+
 
 // =====================================
 // EDIT SERVICE REQUEST
@@ -555,122 +747,223 @@ if (
 
 async function editRequest(id) {
 
-    const request = allRequests.find(
-        item => item.id === id
-    );
+    if (!currentUser) {
+
+        alert(
+            "Please log in again."
+        );
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    const request =
+        allRequests.find(
+            item => item.id === id
+        );
+
 
     if (!request) {
-        alert("Request not found.");
+
+        alert(
+            "Request not found."
+        );
+
         return;
+
     }
 
-    const requesterName = prompt(
-        "Requester Name:",
-        request.requester_name
-    );
+
+    const requesterName =
+        prompt(
+            "Requester Name:",
+            request.requester_name
+        );
+
 
     if (requesterName === null) {
+
         return;
+
     }
 
-    const department = prompt(
-        "Department:",
-        request.department
-    );
+
+    const department =
+        prompt(
+            "Department:",
+            request.department
+        );
+
 
     if (department === null) {
+
         return;
+
     }
 
-    const description = prompt(
-        "Description:",
-        request.description
-    );
+
+    const description =
+        prompt(
+            "Description:",
+            request.description
+        );
+
 
     if (description === null) {
+
         return;
+
     }
 
-    const priority = prompt(
-        "Priority (Low, Medium, High):",
-        request.priority
-    );
+
+    const priority =
+        prompt(
+            "Priority (Low, Medium, High):",
+            request.priority
+        );
+
 
     if (priority === null) {
+
         return;
+
     }
 
-    const status = prompt(
-        "Status (Pending, In Progress, Completed):",
-        request.status
-    );
+
+    const status =
+        prompt(
+            "Status (Pending, In Progress, Completed):",
+            request.status
+        );
+
 
     if (status === null) {
+
         return;
+
     }
+
 
     const validPriorities = [
+
         "Low",
+
         "Medium",
+
         "High"
+
     ];
+
 
     const validStatuses = [
+
         "Pending",
+
         "In Progress",
+
         "Completed"
+
     ];
 
+
     if (!requesterName.trim()) {
-        alert("Requester name is required.");
+
+        alert(
+            "Requester name is required."
+        );
+
         return;
+
     }
+
 
     if (!department.trim()) {
-        alert("Department is required.");
+
+        alert(
+            "Department is required."
+        );
+
         return;
+
     }
 
-    if (!description.trim()) {
-        alert("Description is required.");
+
+    if (description.trim().length < 10) {
+
+        alert(
+            "Description must contain at least 10 characters."
+        );
+
         return;
+
     }
 
-    if (!validPriorities.includes(priority)) {
+
+    if (
+        !validPriorities.includes(
+            priority
+        )
+    ) {
+
         alert(
             "Priority must be Low, Medium, or High."
         );
+
         return;
+
     }
 
-    if (!validStatuses.includes(status)) {
+
+    if (
+        !validStatuses.includes(
+            status
+        )
+    ) {
+
         alert(
             "Status must be Pending, In Progress, or Completed."
         );
+
         return;
+
     }
 
-    const { error } =
-        await supabaseClient
-            .from("service_requests")
-            .update({
-                requester_name:
-                    requesterName.trim(),
 
-                department:
-                    department.trim(),
+    const {
+        error
+    } = await supabaseClient
+        .from("service_requests")
+        .update({
 
-                description:
-                    description.trim(),
+            requester_name:
+                requesterName.trim(),
 
-                priority:
-                    priority,
+            department:
+                department.trim(),
 
-                status:
-                    status
-            })
-            .eq("id", id)
-            .eq("user_id", currentUser.id);
+            description:
+                description.trim(),
+
+            priority:
+                priority,
+
+            status:
+                status
+
+        })
+        .eq(
+            "id",
+            id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        );
+
 
     if (error) {
 
@@ -679,21 +972,29 @@ async function editRequest(id) {
             error
         );
 
+
         alert(
             "Failed to update request: " +
             error.message
         );
 
+
         return;
+
     }
+
 
     alert(
         "Service request updated successfully!"
     );
 
+
     await loadRequests();
+
     await loadDashboard();
+
 }
+
 
 // =====================================
 // DELETE SERVICE REQUEST
@@ -701,20 +1002,47 @@ async function editRequest(id) {
 
 async function deleteRequest(id) {
 
-    const confirmed = confirm(
-        "Are you sure you want to delete this service request?"
-    );
+    if (!currentUser) {
 
-    if (!confirmed) {
+        alert(
+            "Please log in again."
+        );
+
+        window.location.href =
+            "login.html";
+
         return;
+
     }
 
-    const { error } =
-        await supabaseClient
-            .from("service_requests")
-            .delete()
-            .eq("id", id)
-            .eq("user_id", currentUser.id);
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to delete this service request?"
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    const {
+        error
+    } = await supabaseClient
+        .from("service_requests")
+        .delete()
+        .eq(
+            "id",
+            id
+        )
+        .eq(
+            "user_id",
+            currentUser.id
+        );
+
 
     if (error) {
 
@@ -723,18 +1051,25 @@ async function deleteRequest(id) {
             error
         );
 
+
         alert(
             "Failed to delete request: " +
             error.message
         );
 
+
         return;
+
     }
+
 
     alert(
         "Service request deleted successfully!"
     );
 
+
     await loadRequests();
+
     await loadDashboard();
+
 }
