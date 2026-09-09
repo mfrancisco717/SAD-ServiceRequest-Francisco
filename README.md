@@ -1,10 +1,8 @@
 # ICT Service Request Management System
 
-A small web-based system for a university ICT office to record and manage technical support requests, developed for Laboratory Exercise 3 (Systems Analysis and Design). The system provides a centralized platform for users to create, view, search, filter, update, and delete ICT service requests.
+A small web-based system for a university ICT office to record and manage technical support requests, built for Laboratory Exercise 3 (Systems Analysis and Design). The front end uses HTML, CSS, and JavaScript and is hosted on GitHub Pages. Data storage, authentication, and access control are handled using Supabase.
 
-The front end is developed using HTML, CSS, and JavaScript and is hosted on GitHub Pages.
-
-Full Systems Analysis and Design documentation, including the problem statement, actors, use cases, use case diagram, ERD, requirements, business rules, and testing, is available in [`documentation/system-analysis.md`](documentation/system-analysis.md).
+Full SAD analysis, including the problem statement, actors, use case diagram, ERD, requirements, business rules, and testing, is available in [`documentation/system-analysis.md`](documentation/system-analysis.md).
 
 ---
 
@@ -16,19 +14,9 @@ See [`documentation/system-analysis.md`](documentation/system-analysis.md) for t
 
 ---
 
-## 2. Use Case Diagram
+## 2. ERD
 
-The Use Case Diagram shows how the System User / ICT Personnel interacts with the functions of the system.
-
-![Use Case Diagram](documentation/use-case-diagram.png)
-
-[View Use Case Diagram](documentation/use-case-diagram.png)
-
----
-
-## 3. Entity Relationship Diagram (ERD)
-
-The ERD shows the relationship between users and service requests in the system.
+The Entity Relationship Diagram shows the relationship between users and service requests in the system.
 
 ![Entity Relationship Diagram](documentation/erd.png)
 
@@ -38,7 +26,23 @@ The main relationship is:
 
 ```text
 USER 1 ───────── M SERVICE_REQUEST
+3. Use Case Diagram
 
+The Use Case Diagram shows how the System User / ICT Personnel interacts with the different functions of the ICT Service Request Management System.
+
+View Use Case Diagram
+
+The main use cases include:
+
+Login
+View Dashboard
+Create Request
+View Requests
+Search Request
+Filter Requests
+Update Request
+Delete Request
+Logout
 4. Project Structure
 SAD-ServiceRequest-Francisco/
 │
@@ -49,7 +53,7 @@ SAD-ServiceRequest-Francisco/
 │   └── style.css               # System styling
 │
 ├── js/
-│   ├── supabase.js             # Database client configuration
+│   ├── supabase.js             # Supabase client configuration
 │   ├── auth.js                 # Login, logout, and session handling
 │   └── app.js                  # Dashboard, CRUD, search, filter, validation
 │
@@ -59,7 +63,6 @@ SAD-ServiceRequest-Francisco/
 │   └── use-case-diagram.png    # Use Case Diagram
 │
 └── README.md                   # Project documentation
-
 5. Main Features
 
 The system provides the following features:
@@ -95,22 +98,21 @@ Pending
 In Progress
 Completed
 
-New requests automatically receive a Pending status.
+New service requests automatically receive a Pending status.
 
-6. Deployment — GitHub Pages
+6. Deployment (GitHub Pages)
 
 The system is deployed using GitHub Pages.
 
-Deployment Configuration
-Push the project to GitHub.
-Open the repository.
-Go to Settings → Pages.
-Under Build and deployment, select:
-Source: Deploy from a branch
-Branch: main
-Folder: /(root)
+Deployment Steps
+Push the project repository to GitHub.
+Open the repository's Settings.
+Select Pages.
+Under Build and deployment, select Deploy from a branch.
+Select the main branch.
+Select the /(root) folder.
 Save the settings.
-Wait for the deployment to finish.
+Wait for GitHub Pages to finish deploying.
 Open the deployed system.
 Live System
 
@@ -126,10 +128,10 @@ FR-03	User can view requests	Request Table, app.js	TC-03
 FR-04	User can update a request	Edit Function, app.js	TC-04
 FR-05	User can delete a request	Delete Function, app.js	TC-05
 FR-06	User can search requests	Search Function, app.js	TC-06
-FR-07	User can filter requests	Status/Priority Filters	TC-07
+FR-07	User can filter requests	Status and Priority Filters	TC-07
 FR-08	System displays summaries	Dashboard Statistics	TC-08
 
-The complete requirements traceability and business rules are documented in documentation/system-analysis.md.
+The complete requirements traceability matrix and business rules are documented in documentation/system-analysis.md.
 
 8. Functional Testing
 Test ID	Test Scenario	Expected Result	Result
@@ -144,93 +146,16 @@ TC-08	Open deployed URL	Application loads online	PASS
 
 Test results should only be marked PASS after the corresponding function has been successfully tested.
 
-9. Business Rules
+9. System Documentation
 
-The system follows these business rules:
+The complete Systems Analysis and Design documentation is available in:
 
-Users must log in before accessing the dashboard.
-Requester name is required.
-Department is required.
-A category must be selected.
-The description must contain sufficient information.
-Priority must be Low, Medium, or High.
-New requests automatically receive a Pending status.
-The date and time are automatically recorded.
-Users must confirm before deleting a request.
-Unauthorized database modifications are prevented through access control.
+documentation/system-analysis.md
 
-The complete business rules are available in documentation/system-analysis.md.
-
-10. CRUD Operations
-
-The system implements the four basic CRUD operations:
-
-Create
-
-Users can submit a new ICT service request using the request form.
-
-Read
-
-Users can view existing service requests in the request table.
-
-Update
-
-Users can edit an existing service request and save the changes.
-
-Delete
-
-Users can delete a service request after confirming the deletion.
-
-11. Search and Filtering
-
-The system provides search and filtering functions.
-
-Search
-
-Users can search requests using:
-
-Requester Name
-Description
-Status Filter
-
-Users can filter requests by:
-
-All
-Pending
-In Progress
-Completed
-Priority Filter
-
-Users can filter requests by:
-
-All
-Low
-Medium
-High
-
-Search, status, and priority filters can be combined to find specific service requests.
-
-12. Dashboard
-
-The dashboard provides a summary of the service requests through the following statistics:
-
-Total Requests
-Pending Requests
-In Progress Requests
-Completed Requests
-
-The displayed statistics are automatically updated based on the service request records.
-
-13. System Analysis Documentation
-
-The complete Systems Analysis and Design documentation is available here:
-
-View Complete System Analysis
-
-The documentation includes:
+The documentation contains:
 
 Problem Statement
-Objectives
+System Objectives
 Scope
 Actors
 Use Cases
@@ -248,29 +173,18 @@ System Architecture
 Requirements Traceability Matrix
 Functional Testing
 Conclusion
-14. Technologies Used
-HTML
-CSS
-JavaScript
-PostgreSQL Database
-Authentication
-Git
-GitHub
-GitHub Pages
-15. GitHub Repository
 
-The complete source code and documentation are available in the GitHub repository:
+The repository also contains the system diagrams:
 
-View GitHub Repository
-
-The repository contains:
-
-Source code
-Login page
-Dashboard
-CRUD functions
-Search and filtering
-System analysis documentation
-ERD
-Use Case Diagram
-README documentation
+documentation/erd.png
+documentation/use-case-diagram.png
+10. Security Notes
+Authentication is required before accessing the main dashboard.
+User sessions are managed through the authentication system.
+Row Level Security (RLS) is enabled for the service request data.
+Database access is controlled through authenticated user policies.
+Users can only modify service requests that they are authorized to modify.
+Input validation is implemented for required fields.
+Delete operations require confirmation before removing a request.
+The Supabase service_role key is not exposed in the front-end application.
+Passwords and test account credentials are not included in this README.
