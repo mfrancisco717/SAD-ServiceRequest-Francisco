@@ -24,7 +24,6 @@ The Entity Relationship Diagram shows the relationship between users and service
 
 The main relationship is:
 
-```text
 USER 1 ───────── M SERVICE_REQUEST
 
 One user can create many service requests.
