@@ -26,6 +26,9 @@ The main relationship is:
 
 ```text
 USER 1 ───────── M SERVICE_REQUEST
+
+One user can create many service requests.
+
 3. Use Case Diagram
 
 The Use Case Diagram shows how the System User / ICT Personnel interacts with the different functions of the ICT Service Request Management System.
